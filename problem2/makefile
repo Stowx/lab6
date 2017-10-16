@@ -1,0 +1,24 @@
+DEBUGFLAGS = -g -Wall -Wextra
+cppfiles = $(wildcard * .cpp)
+objects = $(cppfiles:%.cpp=%.o)
+
+program: main.o funcs.o TrianglePrinter.o
+	g++ ${CFLAGS} main.o funcs.o TrianglePrinter.o -o program
+
+.PHONY: debug clean
+debug: CFLAGS = ${DEBUGFLAGS}
+debug: program
+
+main.o: main.cpp funcs.h TrianglePrinter.h
+	g++ ${CFLAGS} -c main.cpp
+
+funcs.o: funcs.cpp funcs.h TrianglePrinter.h
+	g++ ${CFLAGS} -c funcs.cpp
+
+TrianglePrinter.o: TrianglePrinter.cpp funcs.h TrianglePrinter.h
+	g++ ${CFLAGS} -c TrianglePrinter.cpp
+
+clean:
+	-@rm -f program *.o	 
+	-@rm -f *.o
+	-@rm -f
